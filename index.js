@@ -1,12 +1,14 @@
+require('dotenv').config()
+
 const {
   inquiererMenu,
   pause,
   readInput
 } = require("./helpers/inquirer");
-const Searchs = require("./models/searchs");
+const Searches = require("./models/searches");
 
 const main = async() => {
-  const searches = new Searchs()
+  const searches = new Searches()
   let opt
 
   do {
@@ -16,10 +18,9 @@ const main = async() => {
       case 1:
         // Show message
         const place = await readInput('Ciudad: ')
-        console.log(place)
 
         // Search places
-
+        await searches.city(place)
         // Pick a place
 
         // Weather
