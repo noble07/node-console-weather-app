@@ -5,6 +5,18 @@ class Searches {
   constructor() {
     this.history = []
     this.dbPath = './db/database.json'
+    this.readDB()
+  }
+
+  get capitalizedHistory() {
+    //Capitalizar cada palabra
+    return this.history.map(search => {
+      let words = search.split(' ')
+
+      words = words.map(word => word[0].toUpperCase() + word.substring(1))
+
+      return words.join(' ')
+    })
   }
 
   get paramsMapbox() {
@@ -75,6 +87,8 @@ class Searches {
   addHistory(place = '') {
     if (this.history.includes(place.toLocaleLowerCase())) return
 
+    this.history = this.history.splice(0, 5)
+
     this.history.unshift(place.toLocaleLowerCase())
 
     this.saveDB()
@@ -89,7 +103,12 @@ class Searches {
   }
 
   readDB() {
+    if(!fs.existsSync(this.dbPath)) return
 
+    const info = fs.readFileSync(this.dbPath, {encoding: 'utf8'})
+    const data = JSON.parse(info)
+
+    this.history = data.history
   }
 }
 

@@ -48,7 +48,7 @@ const main = async() => {
         break
 
       case 2:
-        searches.history.forEach((name, index) => {
+        searches.capitalizedHistory.forEach((name, index) => {
           console.log(`${((index+1)+'.').green} ${name}`)
         })
         break
