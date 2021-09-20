@@ -69,11 +69,11 @@ const readInput = async(message) => {
   return desc
 }
 
-const listTasksForDeletion = async(tasks = []) => {
+const listPlaces = async(places = []) => {
   
-  const choices = tasks.map(({id, desc}, index) => ({ 
+  const choices = places.map(({id, name}, index) => ({ 
     value: id,
-    name: `${((index+1)+'.').green} ${desc}`
+    name: `${((index+1)+'.').green} ${name}`
   }))
 
   choices.unshift({
@@ -85,7 +85,7 @@ const listTasksForDeletion = async(tasks = []) => {
     {
       type: 'list',
       name: 'id',
-      message: 'Borrar',
+      message: 'Seleccione lugar',
       choices
     }
   ]
@@ -139,7 +139,7 @@ module.exports = {
   inquiererMenu,
   pause,
   readInput,
-  listTasksForDeletion,
+  listPlaces,
   confirm,
   showCheckList
 }

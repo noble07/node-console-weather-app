@@ -13,6 +13,14 @@ class Searches {
     }
   }
 
+  get paramsOpenWeather() {
+    return {
+      'appid': process.env.OPENWEATHER_KEY,
+      'units': 'metric',
+      'lang': 'es'
+    }
+  }
+
   async city(place = '') {
     try {
       //Petición HTTP
@@ -22,12 +30,43 @@ class Searches {
       })
 
       const resp = await instance.get()
-      console.log(resp.data)
-
-      return [] // Return places that matched with the parameter
+      return resp.data.features.map(place => ({
+        id: place.id,
+        name: place.place_name ,
+        lng: place.center[0],
+        lat: place.center[1]
+      }))
 
     } catch (error) {
       return [] 
+    }
+  }
+
+  async weatherByPlace(lat, lon) {
+    try {
+      
+      //TODO: Instace de axios.create()
+      const instance = axios.create({
+        baseURL: 'https://api.openweathermap.org/data/2.5/weather',
+        params: {
+          ...this.paramsOpenWeather,
+          lat,
+          lon
+        }
+      })
+
+      const resp = await instance.get()
+      const {weather, main: {temp, temp_min, temp_max}} = resp.data
+
+      return {
+        desc: weather[0].description,
+        min: temp_min,
+        max: temp_max,
+        temp
+      }
+
+    } catch (err) {
+      console.log(err)
     }
   }
 }
