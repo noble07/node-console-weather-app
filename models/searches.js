@@ -1,8 +1,10 @@
+const fs = require('fs')
 const axios = require('axios')
 
 class Searches {
   constructor() {
-    //TODO: Read DB if exist
+    this.history = []
+    this.dbPath = './db/database.json'
   }
 
   get paramsMapbox() {
@@ -68,6 +70,26 @@ class Searches {
     } catch (err) {
       console.log(err)
     }
+  }
+
+  addHistory(place = '') {
+    if (this.history.includes(place.toLocaleLowerCase())) return
+
+    this.history.unshift(place.toLocaleLowerCase())
+
+    this.saveDB()
+  }
+
+  saveDB() {
+    const payload = {
+      history: this.history
+    }
+
+    fs.writeFileSync(this.dbPath, JSON.stringify(payload))
+  }
+
+  readDB() {
+
   }
 }
 

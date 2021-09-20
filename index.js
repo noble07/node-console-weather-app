@@ -25,7 +25,12 @@ const main = async() => {
 
         // Pick a place
         const id = await listPlaces(places)
+        if (id === 0) continue
+
         const {name, lat, lng} = places.find(place => place.id === id)
+        
+        //Guardar en DB
+        searches.addHistory(name)
 
         // Weather
         const {desc, min, max, temp} = await searches.weatherByPlace(lat, lng)
@@ -40,6 +45,12 @@ const main = async() => {
         console.log('Mínima:', min)
         console.log('Máxima:', max)
         console.log('Como está el clima:', desc.green)
+        break
+
+      case 2:
+        searches.history.forEach((name, index) => {
+          console.log(`${((index+1)+'.').green} ${name}`)
+        })
         break
     
       default:
